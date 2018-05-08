@@ -30,7 +30,8 @@
 			<value>
 				/login.jsp = anon
 				/shiro/login = anon
-				/user.jsp = anon
+                /shiro/logout = logout
+
 				/** = authc
 			</value>
 		</property>
