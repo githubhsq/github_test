@@ -29,6 +29,7 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/login.jsp = anon
+				/shiro/login = anon
 				/user.jsp = anon
 				/** = authc
 			</value>
