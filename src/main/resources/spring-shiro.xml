@@ -8,10 +8,38 @@
 
 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="shiroRealm"></property>
+		<property name="authenticator" ref="authenticator"></property>
+		<property name="realms">
+			<list>
+				<ref bean="shiroRealm" />
+				<ref bean="secondRealm" />
+			</list>
+		</property>
 	</bean>
 
-	<bean id="shiroRealm" class="com.tsingsoft.realms.ShiroRealm"></bean>
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="authenticationStrategy">
+			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy" />
+		</property>
+	</bean>
+
+	<bean id="shiroRealm" class="com.tsingsoft.realms.ShiroRealm">
+		<property name="credentialsMatcher">
+			<bean  class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="secondRealm" class="com.tsingsoft.realms.SecondRealm">
+		<property name="credentialsMatcher">
+			<bean  class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="SHA1"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
@@ -31,7 +59,8 @@
 				/login.jsp = anon
 				/shiro/login = anon
                 /shiro/logout = logout
-
+				/admin.jsp = roles[user]
+				/user.jsp = roles[admin]
 				/** = authc
 			</value>
 		</property>
