@@ -54,17 +54,24 @@
 		<property name="successUrl" value="/list.jsp" />
 		<property name="unauthorizedUrl" value="unauthorized.jsp"/>
 
-		<property name="filterChainDefinitions">
-			<value>
-				/login.jsp = anon
-				/shiro/login = anon
-                /shiro/logout = logout
-				/admin.jsp = roles[user]
-				/user.jsp = roles[admin]
-				/** = authc
-			</value>
-		</property>
+		<property name="filterChainDefinitionMap" ref="filterChainDefinitionMap" />
+		<!--<property name="filterChainDefinitions">-->
+			<!--<value>-->
+				<!--/login.jsp = anon-->
+				<!--/shiro/login = anon-->
+                <!--/shiro/logout = logout-->
+				<!--/admin.jsp = roles[user]-->
+				<!--/user.jsp = roles[admin]-->
+				<!--/** = authc-->
+			<!--</value>-->
+		<!--</property>-->
 	</bean>
+    <bean id="filterChainDefinitionMapBuilder"
+		  class="com.tsingsoft.factory.FilterChainDefinitionMapBuilder" />
 
+	<bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder"
+		  factory-method="buildFilterChainDefinitionMap"/>
+
+	<bean id="shiroService" class="com.tsingsoft.service.ShiroService"></bean>
 </beans>
 
