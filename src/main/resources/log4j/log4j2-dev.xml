@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration status="WARN" monitorInterval="30">
+    <properties>
+        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -| %msg%n
+        </property>
+    </properties>
+
+    <appenders>
+        <Console name="CONSOLE" target="system_out">
+            <PatternLayout pattern="${PATTERN}" />
+        </Console>
+        <File name="DEVLOG" fileName="logs/dev.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
+        </File>
+        
+        <RollingFile name="INFOLOG" fileName="logs/info.log"
+            filePattern="logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+        </RollingFile>
+        
+        <RollingFile name="ERRORLOG" fileName="logs/error.log"
+            filePattern="logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <logger name="org.springframework" level="INFO" />
+        <logger name="org.mybatis" level="INFO" />
+        <logger name="com.tsingsoft" level="debug">
+            <appenderref ref="CONSOLE" />
+        </logger>
+        
+        <root level="all">
+            <appender-ref ref="INFOLOG" />
+             <appenderref ref="DEVLOG" />
+        </root>
+    </loggers>
+
+</configuration> 

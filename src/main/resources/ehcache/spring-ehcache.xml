@@ -7,7 +7,7 @@
          http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-		  p:configLocation="classpath:ehcache.xml" p:shared="true"/>
+		  p:configLocation="classpath:ehcache/ehcache.xml" p:shared="true"/>
 
 	<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
 		  p:cacheManager-ref="cacheManagerFactory" />
